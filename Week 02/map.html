@@ -69,6 +69,34 @@
             e.preventDefault();
         })
 
+        function path(map, start, end) {
+            var queen = [start];
+            function insert(x, y) {
+                //碰边界
+                if (x < 0 || x >= 100 || y < 0 || y >= 100) {
+                    return;
+                }
+                //碰墙和已经搜索过的点
+                if (map[x * 100 + y]) {
+                    return;
+                }
+                map[x * 100 + y] = 2;
+                queen.push([x,y]);
+            }
+            while (queen.length) {
+                let [x, y] = queen.shift();//删除前面的第一个元素并且返回
+                console.log(x, y);
+                if (x === end[0] && y === end[1]) {
+                    return true;
+                }
+                insert(x - 1, y)//左
+                insert(x + 1, y)//右边
+                insert(x, y - 1)//下
+                insert(x, y + 1);//上
+            }
+            return false;
+        }
+
     </script>
 
 </body>
