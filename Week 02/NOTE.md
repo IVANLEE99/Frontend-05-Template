@@ -17,3 +17,4 @@ cell.style.backgroundColor = "";给元素设置背景颜色
         3、推荐使用：
                 var arr = nodes.getElementsByTagName("li");
                 arr[ i ].xxx
+6、Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
