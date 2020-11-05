@@ -10,7 +10,8 @@
 
 <body>
     <script>
-        let callbacks = []
+        let usedRectivties = [];
+        let callbacks = new Map();
         let obj = {
             a: 'youngs',
             b: 2
@@ -18,33 +19,49 @@
         let po = reactive(obj);
 
         effect(() => {
-            console.log(po.a);
+            console.log('---'+po.a);
         });
         function effect(callback) {
-            callbacks.push(callback);
+            usedRectivties = [];
+            callback();//调用方法收集依赖
+            console.log(usedRectivties);
+            for (const reactivity of usedRectivties) {
+                // reactivity[0]  obj
+                // reactivity[1]  prop
+                if (!callbacks.has(reactivity[0])) {
+                    callbacks.set(reactivity[0], new Map());
+                }
+                if (!callbacks.get(reactivity[0]).has(reactivity[1])) {
+                    callbacks.get(reactivity[0]).set(reactivity[1], [])
+                }
+                callbacks.get(reactivity[0]).get(reactivity[1]).push(callback)
+            }
         }
         function reactive(object) {
             return new Proxy(object, {
                 set(obj, prop, val) {
                     obj[prop] = val;
-                    for (const callback of callbacks) {
-                        callback();
+                    if (callbacks.get(obj)) {
+                        if (callbacks.get(obj).get(prop)) {
+                            for (const callback of callbacks.get(obj).get(prop)) {
+                                callback();
+                            }
+                        }
                     }
                     return obj[prop]
                 },
                 get(obj, prop) {
-                    // console.log('-----get-----');
-                    // console.log(obj, prop);
+                    usedRectivties.push([obj,prop])//收集依赖
                     return obj[prop]
                 }
             })
         }
-        po.a = 'hello youngs'
-        // console.log('----------');
-        obj.a = 'hello youngs'
-        po.c = 'test';
-        obj.c;
-        po.c;
+        // po.a = 'hello youngs'
+        // // console.log('----------');
+        // obj.a = 'hello youngs'
+        // po.c = 'test';
+        // obj.c;
+        // po.c;
 
     </script>
 </body>
