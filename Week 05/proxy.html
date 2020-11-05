@@ -11,16 +11,31 @@
 <body>
     <script>
         let obj = {
-            a: 'youngs'
+            a: 'youngs',
+            b: 2
         }
-        let po = new Proxy(obj, {
-            set(obj, prop, value) {
-                console.log(obj, prop, value);
-            }
-        })
+        let po = reactive(obj);
+        function reactive(object) {
+            return new Proxy(object, {
+                set(obj, prop, val) {
+                    obj[prop] = val;
+                    console.log('-----set-----');
+                    console.log(obj, prop, val);
+                    return obj[prop]
+                },
+                get(obj, prop) {
+                    console.log('-----get-----');
+                    console.log(obj, prop);
+                    return obj[prop]
+                }
+            })
+        }
         po.a = 'hello youngs'
         console.log('----------');
         obj.a = 'hello youngs'
+        po.c = 'test';
+        obj.c;
+        po.c;
 
     </script>
 </body>
