@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proxy</title>
+</head>
+
+<body>
+    <script>
+        let obj = {
+            a: 'youngs'
+        }
+        let po = new Proxy(obj, {
+            set(obj, prop, value) {
+                console.log(obj, prop, value);
+            }
+        })
+        po.a = 'hello youngs'
+        console.log('----------');
+        obj.a = 'hello youngs'
+
+    </script>
+</body>
+
+</html>
