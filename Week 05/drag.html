@@ -9,7 +9,10 @@
 </head>
 
 <body>
-    <div id="dragable" style="width: 100px;height:100px;background-color:pink;"></div>
+    <div id="container">
+        文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本文本
+    </div>
+    <div id="dragable" style="display:inline-block;width:100px;height:100px;background-color:pink;"></div>
     <script>
         let dragable = document.getElementById("dragable");
         let baseX = 0, baseY = 0;
@@ -24,11 +27,39 @@
                 document.removeEventListener("mouseup", up);
             }
             let move = event => {
-                dragable.style.transform = `translate(${baseX + event.clientX - startX}px,${baseY + event.clientY - startY}px)`
+                // dragable.style.transform = `translate(${baseX + event.clientX - startX}px,${baseY + event.clientY - startY}px)`
+                let range = getNearest(event.clientX, event.clientY);
+                range.insertNode(dragable);
             }
             document.addEventListener("mousemove", move);
             document.addEventListener("mouseup", up);
         })
+
+        let ranges = [];
+        let container = document.getElementById('container');
+        for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
+            const e = container.childNodes[0];
+            let range = document.createRange();
+            range.setStart(e, i);
+            range.setEnd(e, i);
+            console.log(range.getBoundingClientRect());
+            ranges.push(range);
+        }
+
+        function getNearest(x, y) {
+            let min = Infinity;
+            let nearest = null;
+            for (const range of ranges) {
+                let react = range.getBoundingClientRect();
+                let distance = (react.x - x) ** 2 + (react.y - y) ** 2;
+                if (distance < min) {
+                    nearest = range;
+                    min = distance;
+                }
+            }
+            return nearest;
+        }
+        document.addEventListener("selectstart", e => e.preventDefault())
     </script>
 </body>
 
