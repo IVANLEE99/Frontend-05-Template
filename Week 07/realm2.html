@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div id="mountNode"></div>
+    <script src="https://gw.alipayobjects.com/os/lib/antv/g6/3.8.4/dist/g6.min.js"></script>
+    <script>
+        let bodyStyle = document.body.style;
+        let width = document.body.clientWidth;
+        let height = window.innerHeight - bodyStyle.marginTop - bodyStyle.marginBottom;
+
+        let root = globalThis || window;
+
+        // list from https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects
+        let onJSRealms = new Set([
+            'Infinity',
+            'NaN',
+            'undefined',
+            'eval',
+            'uneval',
+            'isFinite',
+            'isNaN',
+            'parseFloat',
+            'parseInt',
+            'decodeURI',
+            'decodeURIComponent',
+            'encodeURI',
+            'encodeURIComponent',
+            'Object',
+            'Function',
+            'Boolean',
+            'Symbol',
+            'Error',
+            'AggregateError',
+            'EvalError',
+            'InternalError',
+            'RangeError',
+            'Number',
+            'BigInt',
+            'Math',
+            'Date',
+            'String',
+            'RegExp',
+            'Array',
+            'Int8Array',
+            'Uint8Array',
+            'Uint8ClampedArray',
+            'Int16Array',
+            'Uint16Array',
+            'Int32Array',
+            'Uint32Array',
+            'Float32Array',
+            'Float64Array',
+            'BigInt64Array',
+            'BigUint64Array',
+            'Map',
+            'Set',
+            'WeakMap',
+            'WeakSet',
+            'ArrayBuffer',
+            'SharedArrayBuffer',
+            'Atomics',
+            'DataView',
+            'JSON',
+            'Promise',
+            'Generator',
+            'GeneratorFunction',
+            'AsyncFunction',
+            'Reflect',
+            'Proxy',
+            'Intl',
+            'WebAssembly',
+        ]);
+
+        let functionIgnore = new Set([
+            "caller", "callee", "arguments",
+        ]);
+
+        function ableNode(obj, property) {
+            if (obj instanceof Array) return false;
+
+            if (obj == root) {
+                if (onJSRealms.has(property)) return true;
+                return false;
+            }
+
+            if (typeof obj == "function") {
+                if (functionIgnore.has(property)) return false;
+            }
+            return true;
+        }
+
+        let visited = new Set;
+        function visitObject(obj, label, id, info, deep = 0) {
+            info.nodes.push({
+                id, label,
+                size: 65,
+                x: 0,
+                y: 0,
+            });
+            visited.add(obj);
+
+            for (let key of Object.getOwnPropertyNames(obj)) {
+                if (!ableNode(obj, key)) continue;
+                const addChild = (child, key) => {
+                    if (visited.has(child)) return;
+                    if (child && (typeof child == "object" || typeof child == "function")) {
+                        let childId = `${id}.${key}`;
+                        info.edges.push({ source: id, target: childId })
+                        info = visitObject(child, key, childId, info, deep + 1);
+                    }
+                }
+
+                let kInfo = Object.getOwnPropertyDescriptor(obj, key);
+                if (kInfo.value) {
+                    addChild(kInfo.value, key);
+                }
+                else {
+                    addChild(kInfo.get, `get ${key}`);
+                    addChild(kInfo.set, `set ${key}`);
+                }
+            }
+
+            return info;
+        }
+        let data = visitObject(root, "globalThis", "globalThis", {
+            nodes: [],
+            edges: [],
+        });
+        data.nodes[0].x = width / 2;
+        data.nodes[0].y = height / 2;
+
+        const graph = new G6.Graph({
+            container: 'mountNode',
+            width: document.body.clientWidth,
+            height: root.innerHeight - bodyStyle.marginTop - bodyStyle.marginBottom,
+            fitView: true,
+            modes: {
+                default: ['drag-canvas', 'zoom-canvas', 'drag-node'],
+            },
+            layout: {
+                type: 'force',
+                linkDistance: 100,
+                preventOverlap: true,
+                nodeSize: 65
+            },
+        });
+        graph.data(data);
+        graph.render();
+    </script>
+</body>
+
+</html>
