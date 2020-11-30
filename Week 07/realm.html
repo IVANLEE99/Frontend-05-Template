@@ -68,7 +68,7 @@
         objects.forEach((o, index) => {
             set.add(o);
             nodes.push({
-                id: index + '',
+                id: index+'',
                 label: o,
             })
         });
@@ -90,13 +90,13 @@
                         set.add(d.value), objects.push(d.value);
                         let index = objects.length - 1;
                         nodes.push({
-                            id: index + '',
+                            id: index+'',
                             // label: String(d.value),
                             label: p
                         })
                         edges.push({
-                            source: index + '',
-                            target: i + '',
+                            source: index+'',
+                            target: i+'',
                         })
                     }
 
@@ -111,8 +111,8 @@
                             label: 'get:' + p
                         })
                         edges.push({
-                            source: index + '',
-                            target: i + '',
+                            source: index+'',
+                            target: i+'',
                         })
                     }
                 }
@@ -122,13 +122,13 @@
                         set.add(d.set), objects.push(d.set);
                         let index = objects.length - 1;
                         nodes.push({
-                            id: index + '',
+                            id: index+'',
                             // label: String(d.set)
                             label: 'set:' + p
                         })
                         edges.push({
-                            source: index + '',
-                            target: i + '',
+                            source: index+'',
+                            target: i+'',
                         })
                     }
                 }
@@ -212,7 +212,7 @@
             //     linkDistance: 100,
             //     preventOverlap: true,
             //     nodeSize: 65,
-            //     // onTick
+            //     onTick
             // }
         });
         graph.data(data);
