@@ -27,23 +27,41 @@ function foundA(c) {
 function foundB(c) {
     if (c === 'c') {
         return foundC;
-    } else {
+    }{
         return start(c);
+    }
+}
+function foundB2(c) {
+ if (c === 'x') {
+        return end;
+    } {
+        return foundB(c);
     }
 }
 function foundC(c) {
-    if (c === 'd') {
-        return foundD;
+    if (c === 'a') {
+        return foundA2;
     } else {
         return start(c);
     }
 }
-function foundD(c) {
-    if (c === 'e') {
-        return end;
+function foundA2(c) {
+    if (c === 'b') {
+        return foundB2;
     } else {
         return start(c);
     }
 }
+// function foundD(c) {
+//     if (c === 'e') {
+//         return end;
+//     } else {
+//         return start(c);
+//     }
+// }
 
-console.log(match('youngs abcdabcdefg'));
+// 用状态机实现：字符串“abcabx”的解析
+
+console.log(match('youngs abcdfdfabcabx'));
+
+// console.log(match('youngs abcdabcdefg'));
