@@ -7,8 +7,10 @@ http.createServer((request, response) => {
     request.on('error', err => {
         console.error(err);
     }).on('data', (chunk) => {
-        body.push(chunk.toString());
+        body.push(chunk);
     }).on('end', () => {
+        console.log('---body-');
+        console.log(body);
         body = Buffer.concat(body).toString();
         console.log('body', body);
         response.writeHead(200, {
