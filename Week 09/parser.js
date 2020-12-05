@@ -1,7 +1,44 @@
 let currentToken = null;
 let currentAttribute = null;
+let stack = [{ type: "document", children: [] }]
+let currentTextNode = null;
 function emit(token) {
-    console.log(token);
+    // console.log(token);
+    if (token.type === 'text') {
+        return;
+    }
+    let top = stack[stack.length - 1];
+    if (token.type == 'startTag') {
+        let element = {
+            type: 'element',
+            children: [],
+            attributes: []
+        };
+        element.tagName = token.tagName;
+        for (const p in token) {
+            if (token.hasOwnProperty(p)) {
+                const e = token[p];
+                if (p != "type" && p != "tagName") {
+                    element.attributes.push({
+                        name: p,
+                        value: token[p]
+                    });
+                }
+            }
+        }
+        top.children.push(element);
+        element.parent = top;
+        if (!token.isSelfClosing) {
+            stack.push(element)
+        }
+    } else if (token.type == 'endTag') {
+        if (top.tagName != token.tagName) {
+            throw new Error("Tag start end doesn't match!")
+        } else {
+            stack.pop();
+        }
+        currentTextNode = null;
+    }
 }
 const EOF = Symbol('EOF');//EOF :End Of File
 
@@ -212,4 +249,5 @@ module.exports.parseHTML = function (html) {
         state = state(c);
     }
     state = state(EOF)
+    console.log(stack[0]);
 }
