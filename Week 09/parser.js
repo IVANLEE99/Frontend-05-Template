@@ -4,9 +4,9 @@ let stack = [{ type: "document", children: [] }]
 let currentTextNode = null;
 function emit(token) {
     // console.log(token);
-    if (token.type === 'text') {
-        return;
-    }
+    // if (token.type === 'text') {
+    //     return;
+    // }
     let top = stack[stack.length - 1];
     if (token.type == 'startTag') {
         let element = {
@@ -37,7 +37,17 @@ function emit(token) {
         } else {
             stack.pop();
         }
+        top.children.push(currentTextNode)
         currentTextNode = null;
+    } else if (token.type == 'text') {
+        if (currentTextNode == null) {
+            currentTextNode = {
+                type: 'text',
+                content: ''
+            }
+            top.children.push(currentTextNode)
+        }
+        currentTextNode.content += token.content;
     }
 }
 const EOF = Symbol('EOF');//EOF :End Of File
