@@ -38,7 +38,15 @@ function computeCSS(element) {
         }
         if (matched) {
             //如果匹配到，我们加入
-            console.log("element", element, "matched rule", rule);
+            // console.log("element", element, "matched rule", rule);
+            var computedStyle = element.computedStyle;
+            for (const declaration of rule.declarations) {
+                if (!computedStyle[declaration.property]) {
+                    computedStyle[declaration.property] = {}
+                }
+                computedStyle[declaration.property].value = declaration.value;
+            }
+            console.log(element.computedStyle);
         }
     }
 }
