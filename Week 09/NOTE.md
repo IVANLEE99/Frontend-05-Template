@@ -34,3 +34,11 @@
 # CSS计算 | 计算选择器与元素匹配
     1、根据选择器的类型和元素属性，计算是否与当前元素匹配
     2、只实现了class id 标签 三种基本选择器
+
+#  CSS计算 | specificity的计算逻辑
+    1、css 规则根据specificity和后来优先规则覆盖
+    2、specificity是一个四元组越左边权重约高
+        div div #id
+        [0,    1,   0,    2]
+        inline id   class tag
+    3、一个css规则的specificity根据包哦含的简单选择器相加而成
