@@ -207,7 +207,9 @@ void async function () {
         console.log(dom);
         let viewport = images(800, 600);
 
-        render(viewport,dom.children[1].children[2].children[0].children[2]);
+        // render(viewport,dom.children[1].children[2].children[0].children[0]);
+        // render(viewport,dom.children[1].children[2].children[0].children[3]);
+        render(viewport,dom);
     
         viewport.save('viewport.jpg');
     } catch (error) {
