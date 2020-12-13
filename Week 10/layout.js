@@ -185,7 +185,7 @@ function layout(element) {
     } else {
         //处理每一个flex行
         flexLines.forEach(function (items) {
-            var mainSpace = item.mainSpace;
+            var mainSpace = items.mainSpace;
             var flexTotal = 0;
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
