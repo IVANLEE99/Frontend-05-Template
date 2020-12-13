@@ -71,7 +71,9 @@ function match(element, selector) {
         }
     } else if (selector.charAt(0) == ".") {
         var attr = element.attributes.filter(attr => attr.name === "class")[0];
-        if (attr && attr.value === selector.replace(".", "")) {
+        var _s = selector.replace(".", "")
+        var _v = attr && attr.value || ''
+        if (_v === _s) {
             return true;
         }
     } else {
