@@ -10,11 +10,21 @@ class Carousel extends Component {
     }
     render() {
         this.root = document.createElement('div');
+        this.root.classList.add('carousel');
         for (const record of this.attributes.src) {
-            let child = document.createElement('img');
-            child.src = record;
+            let child = document.createElement('div');
+            child.style.backgroundImage = `url('${record}')`
             this.root.appendChild(child);
         }
+        let current = 0;
+        setInterval(()=>{
+            let children = this.root.children;
+            ++current;
+            current = current%children.length;
+            for (const child of children) {
+                child.style.transform = `translateX(-${current*100}%)`;
+            }
+        },3000)
         return this.root;
     }
     mountTo(parent) {
