@@ -35,13 +35,28 @@ class Carousel extends Component {
                 currentIndex = nextIndex;
             }, 16);
         }, 3000)*/
+        let position = 0;
         this.root.addEventListener("mousedown", event => {
+            let children = this.root.children;
+            let startX = event.clientX;
             let move = (e) => {
                 console.log('mousemove');
+                let x = e.clientX - startX;
+                for (const child of children) {
+                    child.style.transition = 'none';
+                    child.style.transform = `translateX(${-position * 500 + x}px)`
+                }
             }
 
             let up = (e) => {
                 console.log('mouseup');
+
+                let x = e.clientX - startX;
+                position = position - Math.round(x / 500);
+                for (const child of children) {
+                    child.style.transition = '';
+                    child.style.transform = `translateX(${-position * 500}px)`
+                }
                 document.removeEventListener('mousemove', move);
                 document.removeEventListener('mouseup', up);
             }
