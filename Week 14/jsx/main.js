@@ -16,7 +16,7 @@ class Carousel extends Component {
             child.style.backgroundImage = `url('${record}')`
             this.root.appendChild(child);
         }
-        let currentIndex = 0;
+        /* let currentIndex = 0;
         setInterval(() => {
             let children = this.root.children;
             let nextIndex = (currentIndex + 1) % children.length;
@@ -34,7 +34,21 @@ class Carousel extends Component {
 
                 currentIndex = nextIndex;
             }, 16);
-        }, 3000)
+        }, 3000)*/
+        this.root.addEventListener("mousedown", event => {
+            let move = (e) => {
+                console.log('mousemove');
+            }
+
+            let up = (e) => {
+                console.log('mouseup');
+                document.removeEventListener('mousemove', move);
+                document.removeEventListener('mouseup', up);
+            }
+            console.log('down');
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', up);
+        })
         return this.root;
     }
     mountTo(parent) {
