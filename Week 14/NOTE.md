@@ -33,5 +33,6 @@
         document.addEventListener('mousemove', move);
         document.addEventListener('mouseup', up);
     })
+    5、getBoundClientRect函数详解
 
 ### 

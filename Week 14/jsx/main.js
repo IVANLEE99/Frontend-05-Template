@@ -42,9 +42,15 @@ class Carousel extends Component {
             let move = (e) => {
                 console.log('mousemove');
                 let x = e.clientX - startX;
-                for (const child of children) {
+                let  _position = (position - Math.round(x / 500)+children.length)%children.length;
+                console.log('---_position-');
+                console.log(_position);                
+                console.log(position);                
+                for (let i = 0; i < children.length; i++) {
+                    const child = children[i];
                     child.style.transition = 'none';
-                    child.style.transform = `translateX(${-position * 500 + x}px)`
+                    // child.style.transform = `translateX(${(-position+i) * 500 + x}px)`
+                    child.style.transform = `translateX(${ -position*500+ x}px)`
                 }
             }
 
@@ -52,10 +58,13 @@ class Carousel extends Component {
                 console.log('mouseup');
 
                 let x = e.clientX - startX;
-                position = position - Math.round(x / 500);
-                for (const child of children) {
+                position = (position - Math.round(x / 500)+children.length)%children.length;
+
+                for (let i = 0; i < children.length; i++) {
+                    const child = children[i];
                     child.style.transition = '';
-                    child.style.transform = `translateX(${-position * 500}px)`
+                    // child.style.transform = `translateX(${(-position+i) * 500 + x}px)`
+                    child.style.transform = `translateX(${ -position * 500}px)`
                 }
                 document.removeEventListener('mousemove', move);
                 document.removeEventListener('mouseup', up);
