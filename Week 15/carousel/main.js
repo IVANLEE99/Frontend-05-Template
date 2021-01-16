@@ -13,6 +13,9 @@ let a = <Carousel src={d} />
 a.mountTo(document.body);
 
 let tl = new Timeline();
-let an = new Animation({}, 'a', 0, 100, 1000, null)
-tl.addAnimation(an);
-tl.start();
+let animation = new Animation({ set a(v) { console.log(v); } }, 'a', 0, 100, 1000, null)
+window.tl = tl;
+window.animation = animation;
+
+// tl.addAnimation(an);
+// tl.start();
