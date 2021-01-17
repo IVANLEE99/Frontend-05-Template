@@ -25,6 +25,10 @@ https://cubic-bezier.com
             console.log('tap event trigger')
     })
 
-
+## 11. 手势与动画 | 实现一个flick事件
+    move的时候保存点points，且过滤出500ms内的点，
+    计算距离d 当前的点和points的第一个点的距离
+    v= d/s
+    如果v>1.5则触发flick事件
 
 
