@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>gesture</title>
-    <script src="./gesture.js"></script>
+    <!-- <script src="./gesture.js"></script> -->
 </head>
 
 <body oncontextmenu='return false'>
 
-    <script>
+    <script type="module">
+        import {enableFesture} from './gesture.js'
+        enableFesture( document.documentElement);
         document.documentElement.addEventListener('tap',()=>{
              console.log('tap event trigger')
         })
