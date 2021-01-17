@@ -1,5 +1,6 @@
 let element = document.documentElement;
-window.document.oncontextmenu = function(){ return false;}
+// window.document.oncontextmenu = function(e){ return false;}
+window.document.oncontextmenu = function (e) { e.preventDefault(); }
 let isListeningMouse = false;
 element.addEventListener('mousedown', event => {
     let context = Object.create(null);
@@ -9,7 +10,7 @@ element.addEventListener('mousedown', event => {
     start(event, context);
     let mousemove = event => {
         let button = 1;
-        console.log('move',event.buttons);
+        console.log('move', event.buttons);
         while (button <= event.buttons) {
             if (button & event.buttons) {
                 console.log(button & event.buttons);
@@ -32,14 +33,14 @@ element.addEventListener('mousedown', event => {
         end(event, context);
         contexts.delete('mouse' + (1 << event.button));
         if (event.buttonss === 0) {
-            element.removeEventListener("mousemove", mousemove);
-            element.removeEventListener("mouseup", mouseup);
+            document.removeEventListener("mousemove", mousemove);
+            document.removeEventListener("mouseup", mouseup);
             isListeningMouse = false;
         }
     }
     if (!isListeningMouse) {
-        element.addEventListener('mousemove', mousemove);
-        element.addEventListener("mouseup", mouseup);
+        document.addEventListener('mousemove', mousemove);
+        document.addEventListener("mouseup", mouseup);
         isListeningMouse = true;
     }
 
@@ -113,7 +114,8 @@ let move = (point, context) => {
 let end = (point, context) => {
     // console.log('end', point.clientX, point.clientY);
     if (context.isTap) {
-        console.log('tap');
+        // console.log('tap');
+        dispatch("tap", {})
         clearTimeout(context.handler);
     }
     if (context.isPan) {
@@ -126,4 +128,15 @@ let end = (point, context) => {
 }
 let cancel = (point, context) => {
     console.log('cancel', point.clientX, point.clientY);
+}
+
+function dispatch(type, properties) {
+    let event = new Event(type);
+    for (const key in properties) {
+        if (properties.hasOwnProperty(key)) {
+            const value = properties[key];
+            event[key] = value;
+        }
+    }
+    element.dispatchEvent(event);
 }
