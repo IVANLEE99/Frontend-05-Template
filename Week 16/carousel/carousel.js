@@ -1,21 +1,18 @@
-import { Component, createElement } from './framework.js'
+import { Component, createElement, STATE, ATTRIBUTE } from './framework.js'
 import { enableGesture } from '../GESTURE/gesture.js'
 import { Timeline, Animation } from './animation.js'
 import { ease, easeIn } from './TimingFun.js'
+export { STATE, ATTRIBUTE } from './framework.js'
 export class Carousel extends Component {
     constructor() {
         super();
-        this.attributes = Object.create(null);
-    }
-    setAttribute(name, value) {
-        this.attributes[name] = value;
     }
     render() {
         this.root = document.createElement('div');
         this.root.classList.add('carousel');
-        for (const record of this.attributes.src) {
+        for (const record of this[ATTRIBUTE].src) {
             let child = document.createElement('div');
-            child.style.backgroundImage = `url('${record}')`
+            child.style.backgroundImage = `url('${record.img}')`
             this.root.appendChild(child);
         }
         /* let currentIndex = 0;
@@ -41,7 +38,7 @@ export class Carousel extends Component {
         let timeline = new Timeline;
         timeline.start();
         let children = this.root.children;
-        let position = 0;
+        this[STATE].position = 0;
 
         let handler = null; //自动播放定时器
         let t = 0;
@@ -54,10 +51,16 @@ export class Carousel extends Component {
             console.log('ax--------');
             console.log(progress, ax);
         })
+        this.root.addEventListener('tap', event => {
+            this.triggerEvent("Click", {
+                data: this[ATTRIBUTE].src[this[STATE].position],
+                position: this[STATE].position
+            });
+        })
         this.root.addEventListener('pan', event => {
             console.log('pan');
             let x = event.clientX - event.startX - ax;
-            let current = position - ((x - x % 500) / 500);
+            let current = this[STATE].position - ((x - x % 500) / 500);
             for (const offset of [-1, 0, 1]) {
                 let pos = current + offset;
                 pos = (pos % children.length + children.length) % children.length;
@@ -75,7 +78,7 @@ export class Carousel extends Component {
 
 
             let x = event.clientX - event.startX - ax;
-            let current = position - ((x - x % 500) / 500);
+            let current = this[STATE].position - ((x - x % 500) / 500);
 
             for (const offset of [-1, 0, 1]) {
                 let pos = current + offset;
@@ -93,22 +96,24 @@ export class Carousel extends Component {
 
                 children[pos].style.transition = 'none';
                 timeline.addAnimation(new Animation(children[pos].style, 'transform', -pos * 500 + offset * 500 + x % 500, -pos * 500 + offset * 500 + direction * 500, 500, 0, ease, v => `translateX(${v}px)`))
-                position = position - ((x - x % 500) / 500) - direction;
-                position = (position % children.length + children.length) % children.length;
+                this[STATE].position = this[STATE].position - ((x - x % 500) / 500) - direction;
+                this[STATE].position = (this[STATE].position % children.length + children.length) % children.length;
+                this.triggerEvent("Change", { position: this[STATE].position })
             }
         })
         let nextPicture = () => {
             let children = this.root.children;
-            let nextIndex = (position + 1) % children.length;
-            let current = children[position];
+            let nextIndex = (this[STATE].position + 1) % children.length;
+            let current = children[this[STATE].position];
             let next = children[nextIndex];
 
             t = Date.now();//动画开始时间
 
-            timeline.addAnimation(new Animation(current.style, 'transform', -position * 500, -500 - position * 500, 500, 0, ease, v => `translateX(${v}px)`))
+            timeline.addAnimation(new Animation(current.style, 'transform', -this[STATE].position * 500, -500 - this[STATE].position * 500, 500, 0, ease, v => `translateX(${v}px)`))
 
             timeline.addAnimation(new Animation(next.style, 'transform', 500 - nextIndex * 500, - nextIndex * 500, 500, 0, ease, v => `translateX(${v}px)`))
-            position = nextIndex;
+            this[STATE].position = nextIndex;
+            this.triggerEvent("Change", { position: this[STATE].position })
         }
         handler = setInterval(nextPicture, 3000);
         /*
@@ -168,8 +173,5 @@ export class Carousel extends Component {
 })
 */
         return this.root;
-    }
-    mountTo(parent) {
-        parent.appendChild(this.render());
     }
 }
