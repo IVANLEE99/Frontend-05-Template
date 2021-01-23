@@ -52,7 +52,7 @@ export class Carousel extends Component {
             let progress = (Date.now() - t) / 500;
             ax = ease(progress) * 500 - 500 || 0;
             console.log('ax--------');
-            console.log(progress,ax);
+            console.log(progress, ax);
         })
         this.root.addEventListener('pan', event => {
             console.log('pan');
@@ -67,18 +67,34 @@ export class Carousel extends Component {
                 children[pos].style.transform = `translateX(${-pos * 500 + offset * 500 + x % 500}px)`
             }
         })
-        this.root.addEventListener('panend', event => {
-            console.log('panend');
-            let x = event.clientX - event.startX - ax;
-            position = (position - Math.round(x / 500) + children.length) % children.length;
-            for (const offset of [0, -Math.sign(Math.round(x / 500) - x + 250 * Math.sign(x))]) {
-                let pos = position + offset;
-                pos = (pos + children.length) % children.length;
-                console.log('===pos=');
-                console.log(pos);
-                children[pos].style.transition = '';
-                children[pos].style.transform = `translateX(${-pos * 500 + offset * 500}px)`
+        this.root.addEventListener('end', event => {
+            console.log('end');
+            timeline.reset();
+            timeline.start();
+            handler = setInterval(nextPicture, 3000);
 
+
+            let x = event.clientX - event.startX - ax;
+            let current = position - ((x - x % 500) / 500);
+
+            for (const offset of [-1, 0, 1]) {
+                let pos = current + offset;
+                pos = (pos % children.length + children.length) % children.length;
+
+                let direction = Math.round((x % 500) / 500);
+
+                if (event.isFlick) {
+                    if (event.isFlick < 0) {
+                        direction = Math.ceil((x % 500) / 500);
+                    } else {
+                        direction = Math.floor((x % 500) / 500);
+                    }
+                }
+
+                children[pos].style.transition = 'none';
+                timeline.addAnimation(new Animation(children[pos].style, 'transform', -pos * 500 + offset * 500 + x % 500, -pos * 500 + offset * 500 + direction * 500, 500, 0, ease, v => `translateX(${v}px)`))
+                position = position - ((x - x % 500) / 500) - direction;
+                position = (position % children.length + children.length) % children.length;
             }
         })
         let nextPicture = () => {
@@ -89,9 +105,9 @@ export class Carousel extends Component {
 
             t = Date.now();//动画开始时间
 
-            timeline.addAnimation(new Animation(current.style, 'transform', -position * 500, -500 - position * 500, 1500, 0, ease, v => `translateX(${v}px)`))
+            timeline.addAnimation(new Animation(current.style, 'transform', -position * 500, -500 - position * 500, 500, 0, ease, v => `translateX(${v}px)`))
 
-            timeline.addAnimation(new Animation(next.style, 'transform', 500 - nextIndex * 500, - nextIndex * 500, 1500, 0, ease, v => `translateX(${v}px)`))
+            timeline.addAnimation(new Animation(next.style, 'transform', 500 - nextIndex * 500, - nextIndex * 500, 500, 0, ease, v => `translateX(${v}px)`))
             position = nextIndex;
         }
         handler = setInterval(nextPicture, 3000);

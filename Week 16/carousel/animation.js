@@ -66,9 +66,9 @@ export class Timeline {
         this.pause();
         this.state = 'Inited';
         let startTime = Date.now();
-        this.[PAUSE_TIME] = 0;
+        this[PAUSE_TIME] = 0;
         this[ANIMATIONS] = new Set();
-        this[START_TIME] = 0;
+        this[START_TIME] = new Map();
         this[TICK_HANDLER] = null;
     }
     addAnimation(a, startTime) {
