@@ -25,23 +25,15 @@ let d = [
         url: "http://47.115.74.206:9080/"
     },
 ]
-/*
+
 //轮播图
 let a = <Carousel src={d}
     onChange={event => console.log(event.detail.position)}
     onClick={event => window.location.href = event.detail.data.url} />
-    */
+
 //按钮组件
 // let a = <Button>contents</Button>
+
 //children模板
-let a = <List data={d}>{(record) => <div><img src={record.img} /><a href={record.url}>{record.title}</a></div>}</List>
-// document.body.appendChild(a);
+// let a = <List data={d}>{(record) => <div><img src={record.img} /><a href={record.url}>{record.title}</a></div>}</List>
 a.mountTo(document.body);
-
-// let tl = new Timeline();
-// let animation = new Animation({ set a(v) { console.log(v); } }, 'a', 0, 100, 1000, null)
-// window.tl = tl;
-// window.animation = animation;
-
-// tl.addAnimation(an);
-// tl.start();
