@@ -67,3 +67,8 @@
 [写文件WORKING WITH THE FILE SYSTEM](https://yeoman.io/authoring/file-system.html)
 
 [生成package.json和安装依赖](https://yeoman.io/authoring/dependencies.html)
+
+
+### vue
+
+https://vue-loader.vuejs.org/guide/#manual-setup
