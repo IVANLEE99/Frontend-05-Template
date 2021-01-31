@@ -13,7 +13,7 @@
 
     npm init
     npm install --save yeoman-generator
-    
+
 #### package.json
 
     {
@@ -59,3 +59,11 @@
 
     npm link
     yo tool-chain
+
+#### generators 基本操作
+
+[命令行输入this.prompt](https://yeoman.io/authoring/user-interactions.html)
+
+[写文件WORKING WITH THE FILE SYSTEM](https://yeoman.io/authoring/file-system.html)
+
+[生成package.json和安装依赖](https://yeoman.io/authoring/dependencies.html)
