@@ -37,7 +37,8 @@ module.exports = class extends Generator {
         }
         this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
         this.npmInstall(['vue'], { 'save-dev': false });
-        this.npmInstall(['webpack@4.41.2','webpack-cli@4.4.0', 'vue-loader', 'vue-template-compiler', 'vue-style-loader', 'css-loader','copy-webpack-plugin@6.4.1'], { 'save-dev': true });
+        // this.npmInstall(['webpack@4.41.2','webpack-cli@4.4.0', 'vue-loader', 'vue-template-compiler', 'vue-style-loader', 'css-loader','copy-webpack-plugin@6.4.1'], { 'save-dev': true });
+        this.npmInstall(['webpack','webpack-cli', 'vue-loader', 'vue-template-compiler', 'vue-style-loader', 'css-loader','copy-webpack-plugin'], { 'save-dev': true });
 
         // Extend or create package.json file in destination path
         // this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
