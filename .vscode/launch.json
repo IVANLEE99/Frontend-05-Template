@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "nodejs",
+            "name": "Launch Program",
             "program": "${file}"
         }
     ]
