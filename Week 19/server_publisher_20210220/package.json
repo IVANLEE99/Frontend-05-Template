@@ -9,5 +9,8 @@
     "publish": "scp -r ./* root@47.115.74.206:/usr/local/deploy/server_publisher_20210220"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "unzipper": "^0.10.11"
+  }
 }

@@ -48,3 +48,7 @@ service ssh start
 
     #scp 命令使用端口号 4588
     scp -P 4588 remote@www.runoob.com:/usr/local/sin.sh /home/administrator
+
+## node 压缩和解压
+
+https://www.npmjs.com/package/archiver
