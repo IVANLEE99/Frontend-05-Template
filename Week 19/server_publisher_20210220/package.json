@@ -1,0 +1,13 @@
+{
+  "name": "server-publisher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "publish": "scp -r ./* root@47.115.74.206:/usr/local/deploy/server_publisher_20210220"
+  },
+  "author": "",
+  "license": "ISC"
+}
