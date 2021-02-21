@@ -52,3 +52,39 @@ service ssh start
 ## node 压缩和解压
 
 https://www.npmjs.com/package/archiver
+
+https://www.npmjs.com/package/unzipper
+
+
+通过nodejs的child_process识别环境, 用不同的CLI打开默认浏览器:
+
+    var child_process = require("child_process");
+
+    var url = "http://127.0.0.1",
+        port=8080,
+        cmd = '';
+
+        switch (process.platform) {
+            case 'win32':
+                cmd = 'start';
+                break;
+
+            case 'linux':
+                cmd = 'xdg-open';
+                break;
+
+            case 'darwin':
+                cmd = 'open';
+                break;
+        }
+
+        child_process.exec(cmd + ' ' + url + ':' + port);
+
+# github 开发文档 github 鉴权流程
+
+    https://docs.github.com/en/developers/apps/identifying-and-authorizing-users-for-github-apps
+
+    1、跳转到授权页,得到授权码 code
+    2、code + client_id + client_secret 获取 access_token,
+    3、用accent_token 获取用户信息
+    4、根据用户 信息鉴权
